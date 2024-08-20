@@ -1,6 +1,7 @@
 const accessToken = "81c3d886bb50a6ece309a5c4ecb4bc71ef123b6e"
 
-let globalData = null;
+let globalStats = null;
+let globalActivities = null;
 
 fetch(`https://www.strava.com/api/v3/athletes/22229438/stats?access_token=${accessToken}`)
 .then(res => res.json()) // parse response as JSON
@@ -13,17 +14,27 @@ fetch(`https://www.strava.com/api/v3/athletes/22229438/stats?access_token=${acce
     console.log(`error ${err}`)
 });
 
+fetch(`https://www.strava.com/api/v3/athletes/22229438/activities?before=&after=&page=&per_page=?access_token=${accessToken}`)
+.then(res => res.json()) // parse response as JSON
+.then(data => {
+  console.log(data)
+  globalActivities = data
+
+})
+.catch(err => {
+    console.log(`error ${err}`)
+});
 
 
 document.getElementById('runButton').addEventListener('click', displayRun)
 document.getElementById('rideButton').addEventListener('click', displayBike)
 
 function displayRun () {
-    document.querySelector('h2').innerText = `${globalData.all_run_totals.distance} miles`
+    document.querySelector('h2').innerText = `${globalStats.all_run_totals.distance} miles`
 }
 
 function displayBike () {
-    document.querySelector('h2').innerText = `${globalData.all_ride_totals.distance} miles`
+    document.querySelector('h2').innerText = `${globalStats.all_ride_totals.distance} miles`
 }
 
 // {
